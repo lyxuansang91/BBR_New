@@ -2,6 +2,7 @@ package com.cadang.android.bbrproject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import com.android.view.ViewHolder;
 
 import com.cadang.android.bbrproject.util.*;
 import com.cadang.android.bbrproject.util.MediaPlayerService.MediaPlayerBinder;
@@ -101,11 +102,12 @@ public class BbrActivity extends Activity
 	private static boolean				mAutoPlay 	= true;
 	private static boolean				mRepeated 	= false;
 	private static int					mPlayListNo = -1;
+	private static Bitmap mBitmap; 
 	private boolean				mIntroShow	= false;
 	private MediaStream[]	mSlideStream;
 	private int				mSlideStreamPosition = 0;
 	//private static Bitmap[] 					mSlides = new Bitmap[3];
-	private static Bitmap 					mSlideBitmap;
+	private Bitmap 					mSlideBitmap;
 	//private static int						mSlidePosition = -1;
 	private static final int		SLIDE_DELAY	= 10000;
 	private static final int		FADE_DURATION = 300;
@@ -988,7 +990,7 @@ public class BbrActivity extends Activity
 		}
 	};
 	//end of bbr class
-	static class ViewHolder{
+	 /* static class ViewHolder{
 		ImageButton appMediaButton;
 		ImageButton appKnowledgeButton;
 		ImageButton appShopButton;
@@ -1022,7 +1024,7 @@ public class BbrActivity extends Activity
 		public ViewHolder(){
 			
 		}
-	}
+	} */
 	public class MyGestureDetector extends SimpleOnGestureListener{
 
 		/* (non-Javadoc)
