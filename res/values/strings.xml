@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BBR</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="strConnecting">Connecting</string>
+    <string name="strUnknowLabel">Unknow</string>
+    <string name="title_activity_player">PlayerActivity</string>
+    <string name="strPlayerStatus">Media Player Status</string>
+
+    <string-array name="playerStatus">
+        <item>EMPTY</item>
+        <item>CREATED</item>
+        <item>PREAPRING</item>
+        <item>PREPARED</item>
+        <item>PLAYING</item>
+        <item>STARTED</item>
+        <item>PAUSED</item>
+        <item>STOPPED</item>
+        <item>ERROR</item>
+    </string-array>
+
+    <string name="strAppInfo">NewProject NBB this is a long long text for scrolling, and didnt know that wil be happen on long time.</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="title_activity_intro_loading">BBR</string>
+
+</resources>

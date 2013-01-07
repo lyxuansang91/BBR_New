@@ -1,0 +1,476 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFFFF"
+    tools:context=".BbrActivity" >
+
+    <!--
+         The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc.
+    -->
+    
+    <FrameLayout
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:keepScreenOn="true"
+        
+        >
+
+       <FrameLayout
+           android:id="@+id/media_screen_content"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:keepScreenOn="true" >
+
+           <ImageView
+               android:id="@+id/media_slideshow2"
+               android:layout_width="match_parent"
+               android:layout_height="fill_parent"
+               android:scaleType="centerCrop"
+               android:visibility="visible"
+               android:alpha="0"
+               android:src="@drawable/media_background" />
+			<ImageView
+               android:id="@+id/media_slideshow"
+               android:layout_width="match_parent"
+               android:layout_height="fill_parent"
+               android:scaleType="centerCrop"
+               android:src="@drawable/media_background" />
+           
+           <LinearLayout
+               android:layout_width="fill_parent"
+               android:layout_height="fill_parent"
+               android:orientation="vertical" >
+
+               <TextView
+                   android:id="@+id/media_info_status"
+                   android:layout_width="match_parent"
+                   android:layout_height="0dp"
+                   android:layout_weight=".06"
+                   
+                   android:singleLine="true"
+                   android:ellipsize="marquee"
+                   android:marqueeRepeatLimit="marquee_forever"
+                   android:freezesText="true"
+                   android:focusable="true"
+                   
+                   android:gravity="bottom"
+                   android:paddingLeft="160dp"
+                   android:paddingRight="96dp"
+                   android:text="BBR app - Media Player"
+                   android:textAppearance="?android:attr/textAppearanceLarge" 
+                   android:background="@color/black_overlay25"/>
+
+               <com.pheelicks.visualizer.VisualizerView
+                   android:id="@+id/visualizerView"
+                   android:layout_width="fill_parent"
+                   android:layout_height="0dp"
+                   android:layout_weight=".7" />
+
+               <FrameLayout
+                   android:id="@+id/media_controls"
+                   android:layout_width="match_parent"
+                   android:layout_height="0dp"
+                   android:layout_weight=".05"
+                   >
+                   <LinearLayout 
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:background="@color/black_overlay">
+
+                   <ImageButton
+                       android:id="@+id/dummy_button"
+                       style="?buttonBarButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight=".1"
+                       android:src="@drawable/media_button_empty" />
+
+                   <ImageButton
+                       android:id="@+id/dummy_button1"
+                       style="?buttonBarButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight=".1"
+                       android:src="@drawable/media_button_empty" />
+
+                   <ImageButton
+                       android:id="@+id/button_media_share"
+                       style="?buttonBarButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight=".1"
+                       android:src="@drawable/media_share_button" />
+
+                   <ImageButton
+                       android:id="@+id/button_media_prev"
+                       style="?buttonBarButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight=".1"
+                       android:src="@drawable/media_prev_button" />
+
+                   <ImageButton
+                       android:id="@+id/button_media_play"
+                       style="?buttonBarButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight=".1"
+                       android:src="@drawable/media_play_button" />
+
+                   <ImageButton
+                       android:id="@+id/button_media_next"
+                       style="?buttonBarButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight=".1"
+                       android:src="@drawable/media_next_button" />
+
+                   <ImageButton
+                       android:id="@+id/button_media_like"
+                       style="?buttonBarButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight=".1"
+                       android:src="@drawable/media_like_button" />
+
+                   <ImageButton
+                       android:id="@+id/dummy_button3"
+                       style="?buttonBarButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight=".1"
+                       android:src="@drawable/media_button_empty" />
+
+                   <ImageButton
+                       android:id="@+id/dummy_button4"
+                       style="?buttonBarButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight=".1"
+                       android:src="@drawable/media_button_empty" />
+               </LinearLayout>
+			</FrameLayout>
+
+               <TextView
+                   android:id="@+id/media_ideal_text"
+                   android:layout_width="match_parent"
+                   android:layout_height="0dp"
+                   android:layout_weight=".19"
+                   android:padding="5dp"
+                   android:text="Medium Text"                   
+                   android:textAppearance="?android:attr/textAppearanceMedium" 
+                   android:background="@color/red_overlay35" />
+
+           </LinearLayout>
+       </FrameLayout>
+
+       <FrameLayout
+           android:id="@+id/knowledge_screen_content"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:gravity="center"
+           android:keepScreenOn="true" >
+			<LinearLayout android:id="@+id/news_listing" 
+			    android:layout_width="match_parent" 
+			    android:layout_height="match_parent" 
+			    android:orientation="vertical">
+				<TextView android:id="@+id/textView1" 
+				    android:layout_width="match_parent" 
+				    android:layout_height="0dp" 
+				    android:layout_weight=".08" 
+				    android:gravity="center" 
+				    android:background="@drawable/knowledge_title" 
+				    android:paddingLeft="36dp" 
+				    android:text="Kiến thức cho mẹ" 
+				    android:textAppearance="?android:attr/textAppearanceLarge" />
+				<LinearLayout 
+				    android:layout_width="match_parent" 
+				    android:layout_height="0dp" 
+				    android:layout_weight=".8" 
+				    android:orientation="vertical">
+           			<ListView android:id="@+id/listNews" 
+           			    android:layout_width="match_parent" 
+           			    android:scrollbars="vertical" 
+           			    android:layout_height="wrap_content">
+           			</ListView>
+
+           		</LinearLayout>           		
+           		<TextView 
+           		    android:id="@+id/knowledge_items_status"
+           		    android:layout_width="match_parent" 
+           		    android:layout_height="0dp" 
+           		    android:layout_weight=".16"
+           		    android:background="@color/black_overlay25" />
+			</LinearLayout>
+			<LinearLayout 
+			    android:id="@+id/news_detail"
+			    android:layout_width="match_parent"
+			    android:layout_height="match_parent"
+			    android:orientation="vertical">
+			    <TextView 
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:layout_weight=".06"/>
+
+				<WebView
+				    android:id="@+id/news_detailweb"
+				    android:layout_width="match_parent"
+				    android:layout_height="0dp"
+				    android:layout_weight=".8"
+				    android:visibility="invisible" />
+
+				<TextView 
+				    android:id="@+id/knowledge_detail_status"
+				    android:layout_width="match_parent"
+				    android:layout_height="0dp"
+				    android:layout_weight=".16"
+				    android:background="@color/black_overlay25"/>
+			</LinearLayout>
+       </FrameLayout>
+
+       <FrameLayout
+           android:id="@+id/shop_screen_content"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:gravity="center"
+           android:keepScreenOn="true" >
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="vertical" >
+
+               <TextView
+                   android:id="@+id/textView2"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="TextView" />
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="vertical" >
+               </LinearLayout>
+
+           </LinearLayout>
+
+       </FrameLayout>
+
+       <FrameLayout
+           android:id="@+id/dairy_screen_content"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:gravity="center"
+           android:background="@color/black_overlay25"
+           android:keepScreenOn="true" >
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="vertical" >
+               <TextView android:id="@+id/dairt_title" 
+				    android:layout_width="match_parent" 
+				    android:layout_height="0dp" 
+				    android:layout_weight=".08" 
+				    android:gravity="center" 
+				    android:background="@drawable/knowledge_title" 
+				    android:paddingLeft="36dp" 
+				    android:text="Nhật ký của mẹ" 
+				    android:textAppearance="?android:attr/textAppearanceLarge" />
+				<ListView
+        			android:id="@+id/listView"
+        			android:layout_width="match_parent"
+        			android:layout_height="0dp"
+        			android:layout_weight=".5"
+        			android:layout_alignParentLeft="true"
+        			android:layout_alignParentTop="true"
+        			android:divider="@null"
+        			android:dividerHeight="0dp" >
+
+    			</ListView>
+    			<EditText
+        			android:id="@+id/dairy_dairyTitle"
+        			android:layout_width="match_parent"
+        			android:layout_height="0dp"
+        			android:layout_weight=".15"
+        			android:layout_alignParentLeft="true"
+        			android:layout_alignParentRight="true"
+        			android:ems="10"
+        			android:hint="Mời bạn nhập tiêu đề ..." />
+    			
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="0dp"
+                   android:layout_weight=".3"                   
+                   android:orientation="vertical" >
+           			<Button
+           			    android:id="@+id/btnAttach"
+           			    android:layout_width="30dp"
+           			    android:layout_height="30dp"
+           			    android:background="@drawable/pictures" />
+           			<LinearLayout
+        				android:id="@+id/form"
+        				android:layout_width="fill_parent"
+        				android:layout_height="match_parent"
+        				android:layout_alignParentBottom="true"
+        				android:orientation="horizontal" >
+                   		<EditText
+            				android:id="@+id/txtInput"
+            				android:layout_width="wrap_content"
+            				android:layout_height="wrap_content"
+            				android:layout_alignBottom="@+id/btnVietNhatKy"
+            				android:layout_alignParentLeft="true"
+            				android:layout_below="@+id/btnAttach"
+            				android:layout_toLeftOf="@+id/btnVietNhatKy"
+            				android:background="@drawable/back"
+            				android:ems="10"
+            				android:hint="Bạn đang nghĩ gì ..."
+            				android:inputType="textMultiLine"
+            				android:paddingLeft="10dp" >
+
+            				<requestFocus />
+        				</EditText>
+
+        				<Button
+            				android:id="@+id/btnVietNhatKy"
+            				android:layout_width="50dp"
+            				android:layout_height="50dp"
+            				android:layout_alignParentRight="true"
+            				android:layout_centerVertical="true"
+            				android:background="@drawable/notebook_girl" />
+    				</LinearLayout>           			
+    
+               </LinearLayout>
+
+               <TextView
+                   android:id="@+id/dairy_status"
+                   android:layout_width="match_parent"
+                   android:layout_height="0dp"
+                   android:layout_weight=".16"
+                   android:background="@color/black_overlay25"
+                   android:text="TextView" />
+
+           </LinearLayout>
+
+       </FrameLayout>
+
+       <FrameLayout
+           android:id="@+id/wish_screen_content"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:gravity="center"
+           android:keepScreenOn="true" >
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:background="#FF000000"
+               android:orientation="vertical" >
+
+               <TextView
+                   android:id="@+id/wish_title"
+                   android:layout_width="match_parent"
+                   android:layout_height="0dp"
+                   android:layout_weight=".06"
+                   android:text="Bầu trời ước nguyện" />
+				<com.pheelicks.visualizer.VisualizerView
+                   android:id="@+id/wish_sky"
+                   android:layout_width="fill_parent"
+                   android:layout_height="0dp"
+                   android:layout_weight=".7" />
+				<TextView
+                   android:id="@+id/wish_status"
+                   android:layout_width="match_parent"
+                   android:layout_height="0dp"
+                   android:layout_weight=".16"
+                   android:background="@color/black_overlay"
+                   android:text="Gửi đến con những điều ước sẽ thành sự thật" />
+				
+           </LinearLayout>
+
+       </FrameLayout>
+ 
+    </FrameLayout>
+    
+    <!--
+         This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows.
+    -->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true" >
+
+        <LinearLayout
+            android:id="@+id/fullscreen_content_controls"
+            style="?buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay"
+            android:orientation="vertical"
+            tools:ignore="UselessParent" >
+            <LinearLayout 
+                android:id="@+id/app_controls"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+            <ImageButton
+                android:id="@+id/app_media"
+                style="?buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:src="@drawable/app_media"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"
+                />
+            <ImageButton
+                android:id="@+id/app_knowledge"
+                style="?buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:src="@drawable/app_knowledge_i"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"
+                />
+            <ImageButton
+                android:id="@+id/app_shop"
+                style="?buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:src="@drawable/app_shop_i"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"
+                />
+            <ImageButton
+                android:id="@+id/app_dairy"
+                style="?buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:src="@drawable/app_dairy_i"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"
+                />
+            <ImageButton
+                android:id="@+id/app_wish"
+                style="?buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:src="@drawable/app_wish_i"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"
+                />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+       <ImageView
+           android:id="@+id/app_intro"
+           android:layout_width="match_parent"
+           android:layout_height="fill_parent"
+           android:scaleType="centerCrop"           
+           android:src="@drawable/app_intro" />
+
+</FrameLayout>

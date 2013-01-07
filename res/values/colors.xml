@@ -1,0 +1,12 @@
+<resources>
+
+    <color name="black_overlay">#55000000</color>
+    <color name="black_overlay25">#25000000</color>
+    <color name="red_overlay35">#35FF0000</color>
+    <color name="black_overlay05">#08000000</color>
+	<color name="toolbar_top">#857d88a5</color>
+    <color name="toolbar_bottom">#853a4e78</color>
+    <color name="highlight_top">#85ffc600</color>
+    <color name="highlight_bottom">#85cf9600</color>
+    <color name="toolbar_fg">#85ffffff</color>
+</resources>
