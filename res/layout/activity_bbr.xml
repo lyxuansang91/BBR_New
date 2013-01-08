@@ -267,86 +267,61 @@
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:gravity="center"
-           android:background="@color/black_overlay25"
+           
            android:keepScreenOn="true" >
 
            <LinearLayout
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:orientation="vertical" >
-               <TextView android:id="@+id/dairt_title" 
-				    android:layout_width="match_parent" 
-				    android:layout_height="0dp" 
-				    android:layout_weight=".08" 
-				    android:gravity="center" 
-				    android:background="@drawable/knowledge_title" 
-				    android:paddingLeft="36dp" 
-				    android:text="Nhật ký của mẹ" 
-				    android:textAppearance="?android:attr/textAppearanceLarge" />
-				<ListView
-        			android:id="@+id/listView"
-        			android:layout_width="match_parent"
-        			android:layout_height="0dp"
-        			android:layout_weight=".5"
-        			android:layout_alignParentLeft="true"
-        			android:layout_alignParentTop="true"
-        			android:divider="@null"
-        			android:dividerHeight="0dp" >
-
-    			</ListView>
-    			<EditText
-        			android:id="@+id/dairy_dairyTitle"
-        			android:layout_width="match_parent"
-        			android:layout_height="0dp"
-        			android:layout_weight=".15"
-        			android:layout_alignParentLeft="true"
-        			android:layout_alignParentRight="true"
-        			android:ems="10"
-        			android:hint="Mời bạn nhập tiêu đề ..." />
-    			
-               <LinearLayout
+               <TextView
+                   android:id="@+id/dairy_content_title"
                    android:layout_width="match_parent"
                    android:layout_height="0dp"
-                   android:layout_weight=".3"                   
-                   android:orientation="vertical" >
-           			<Button
-           			    android:id="@+id/btnAttach"
-           			    android:layout_width="30dp"
-           			    android:layout_height="30dp"
-           			    android:background="@drawable/pictures" />
-           			<LinearLayout
-        				android:id="@+id/form"
-        				android:layout_width="fill_parent"
-        				android:layout_height="match_parent"
-        				android:layout_alignParentBottom="true"
-        				android:orientation="horizontal" >
-                   		<EditText
-            				android:id="@+id/txtInput"
-            				android:layout_width="wrap_content"
-            				android:layout_height="wrap_content"
-            				android:layout_alignBottom="@+id/btnVietNhatKy"
-            				android:layout_alignParentLeft="true"
-            				android:layout_below="@+id/btnAttach"
-            				android:layout_toLeftOf="@+id/btnVietNhatKy"
-            				android:background="@drawable/back"
+                   android:layout_weight=".09"
+                   
+                   android:text="Nhật ký của mẹ" />
+               <LinearLayout 
+                   android:orientation="horizontal"
+                   android:layout_height="0dp"
+                   android:layout_weight=".1"
+                   android:layout_width="match_parent"
+                   android:background="@color/black_overlay05"
+                   >
+               		<EditText
+            				android:id="@+id/dairy_txtInput"
+            				android:layout_width="0dp"
+            				android:layout_weight=".8"
+            				android:layout_height="wrap_content"            				
+            				android:background="@drawable/bubble_yellow"
             				android:ems="10"
-            				android:hint="Bạn đang nghĩ gì ..."
+            				android:hint="Ghi ngay những cảm nhận của ngày hôm nay ..."
+            				android:gravity="bottom"
             				android:inputType="textMultiLine"
-            				android:paddingLeft="10dp" >
+            				android:lines="3"
+            				android:paddingLeft="20dp"
+            				 >
 
             				<requestFocus />
         				</EditText>
 
-        				<Button
-            				android:id="@+id/btnVietNhatKy"
-            				android:layout_width="50dp"
-            				android:layout_height="50dp"
-            				android:layout_alignParentRight="true"
-            				android:layout_centerVertical="true"
-            				android:background="@drawable/notebook_girl" />
-    				</LinearLayout>           			
+               		<ImageButton
+               		    android:id="@+id/dairy_submit_button"
+               		    android:layout_width="wrap_content"
+               		    android:layout_height="wrap_content"
+               		    android:layout_gravity="center"
+               		    android:src="@drawable/notebook_girl" />
     
                </LinearLayout>
+				<ListView
+        			android:id="@+id/dairy_list_Message"
+        			android:layout_width="match_parent"
+        			android:layout_height="0dp"
+        			android:layout_weight=".7"
+        			android:divider="@null"
+        			android:dividerHeight="0dp" >
+
+    			</ListView>
 
                <TextView
                    android:id="@+id/dairy_status"

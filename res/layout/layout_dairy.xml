@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/dairy_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        
+        >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".2"
+            android:background="#660000FF"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/dairy_text_hour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingRight="10dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="00:00" />
+
+            <TextView
+                android:id="@+id/dairy_text_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Monday, 3"
+                android:gravity="right"
+                android:paddingRight="10dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textAlignment="textEnd" />
+
+            <TextView
+                android:id="@+id/dairy_text_monthyear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingRight="10dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Jan - 2013" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".7"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                
+                android:src="@drawable/dairy_top_bg_item" />
+
+            <TextView
+                android:id="@+id/dairy_text_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dairy_bg_item"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:maxLines="5"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FF000000"
+                android:text="Hôm nay có rất nhiều điều cần ghi lại..." />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                
+                android:layout_height="wrap_content"
+                android:src="@drawable/dairy_bottom_bg_item" />
+
+        </LinearLayout>		
+    </LinearLayout>
+	<View 
+	    android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:background="#FFFFFFFF"
+		/>
+	<View 
+	    android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:background="#FF0000FF"
+		/>
+</LinearLayout>

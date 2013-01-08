@@ -2,8 +2,8 @@ package com.cadang.android.bbrproject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import com.android.view.ViewHolder;
 
+import com.cadang.android.bbrproject.dairy.DairyListener;
 import com.cadang.android.bbrproject.util.*;
 import com.cadang.android.bbrproject.util.MediaPlayerService.MediaPlayerBinder;
 import com.cadang.android.bbrproject.util.MediaStream.MediaType;
@@ -25,6 +25,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,16 +38,22 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -102,7 +109,6 @@ public class BbrActivity extends Activity
 	private static boolean				mAutoPlay 	= true;
 	private static boolean				mRepeated 	= false;
 	private static int					mPlayListNo = -1;
-	private static Bitmap mBitmap; 
 	private boolean				mIntroShow	= false;
 	private MediaStream[]	mSlideStream;
 	private int				mSlideStreamPosition = 0;
@@ -112,15 +118,38 @@ public class BbrActivity extends Activity
 	private static final int		SLIDE_DELAY	= 10000;
 	private static final int		FADE_DURATION = 300;
 	//private static boolean					mSlidetoLeft = false;
-	private String			mIdeal = "Have a good Time";
-	private static final int				IDEAL_DELAY	= 6000;
+	private String					mIdeal = "Have a good Time";
+	private static final int		IDEAL_DELAY	= 6000;
 	private static boolean			mIdealShow = true;
 	
 	private final int		NEWS_MAX_PAGE	= 9;
+	private final int		NEWS_CACHE_PAGE = 4;
 	//private MediaStream[]	mNewsStream;
-	private MediaStream[][] newsCache = new MediaStream[NEWS_MAX_PAGE + 1][];
+	private MediaStream[][] newsCache = new MediaStream[NEWS_CACHE_PAGE][];
 	private int				newsPage = -1;
 	private ViewHolder viewHolder;
+	protected SendWishedMessage mSendWishedMessage;
+	
+	
+	/* void setupControlWish() */
+	public void setupControlWish(){
+		viewHolder.wishImage.setImageResource(R.drawable.stars_1230_600x450);
+		Animation animRotate = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_rotate);
+		viewHolder.wishImage.startAnimation(animRotate);
+		
+		
+		viewHolder.wishButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mSendWishedMessage = new SendWishedMessage(viewHolder.wishMessage.getText().toString(), "http://aoi.vn:8088/wish/");
+				mSendWishedMessage.execute();
+			}
+		});
+		
+		
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -133,15 +162,40 @@ public class BbrActivity extends Activity
 		viewHolder = new ViewHolder();
 		viewHolder.appControlBar 	= controlsView;
 		viewHolder.appContent		= contentView;
+		viewHolder.appMediaContent	= (View)findViewById(R.id.media_screen_content);
+		viewHolder.appKnowledgeContent	= (View)findViewById(R.id.knowledge_screen_content);
+		viewHolder.appShopContent	= (View)findViewById(R.id.shop_screen_content);
+		viewHolder.appDairyContent	= (View)findViewById(R.id.dairy_screen_content);
+		viewHolder.appWishContent	= (View)findViewById(R.id.wish_screen_content);
 		viewHolder.appMediaButton 	= (ImageButton)findViewById(R.id.app_media);
+		
 		viewHolder.mediaControlBar	= (View)findViewById(R.id.media_controls);
+		
+		viewHolder.mediaScreen		= (View)findViewById(R.id.media_screen_content);
 		viewHolder.mediaSlideShow 	= (ImageView)findViewById(R.id.media_slideshow);
 		viewHolder.mediaSlideShow2 	= (ImageView)findViewById(R.id.media_slideshow2);
 		
+		viewHolder.knowledgeScreen	= (View)findViewById(R.id.knowledge_screen_content);
 		viewHolder.knowledgeDetail	= (View)findViewById(R.id.news_detail);
 		viewHolder.knowledgeItems	= (View)findViewById(R.id.news_listing);
 		viewHolder.knowledgeDetailStatus = (TextView)findViewById(R.id.knowledge_detail_status);
 		viewHolder.knowledgeItemsStatus = (TextView)findViewById(R.id.knowledge_items_status);
+		
+		viewHolder.shopScreen		= (View)findViewById(R.id.shop_screen_content);
+		
+		viewHolder.dairyScreen	= (View)findViewById(R.id.dairy_screen_content);
+		viewHolder.dairySaveMessageButton = (ImageButton)findViewById(R.id.dairy_submit_button);
+		viewHolder.dairyListMessages	= (ListView)findViewById(R.id.dairy_list_Message);
+		viewHolder.dairyMessage			= (EditText)findViewById(R.id.dairy_txtInput);
+		
+		/* Set Control Wish Activity */
+		
+		
+		
+		
+		/* End Setup */
+		
+		
 		// Set up an instance of SystemUiHider to control the system UI for
 		// this activity.
 		mSystemUiHider = SystemUiHider.getInstance(this, contentView,
@@ -304,7 +358,7 @@ public class BbrActivity extends Activity
 		}
 		if(!mIntroShow){
 			
-			Log.d("Start Slide Shhow", " Some thing gone??");
+			Log.d("Start Slide Show", " Some thing gone??");
 			new MediaStream.Builder(ServerConfig.URLPICTURE, MediaType.PICTURE, onBuildSlideShow);
 			try {
 				Thread.sleep(2000);
@@ -436,8 +490,33 @@ public class BbrActivity extends Activity
     	//new MediaStream.Builder(ServerConfig.URLPICTURE, MediaType.PICTURE, onBuildSlideShow);
     	new MediaStream.Builder(ServerConfig.URLIDEAL, MediaType.IDEAL, onBuildIdeal);
     	
-    	idealShow(IDEAL_DELAY);
+    	DairyListener myDairy = new DairyListener(this, viewHolder);
+    	myDairy.setupDairy();
     	
+    	idealShow(IDEAL_DELAY);
+    	viewHolder.dairyListMessages.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				if (AUTO_HIDE) {
+					delayedHide(AUTO_HIDE_DELAY_MILLIS);
+				}
+			}
+		});
+    	viewHolder.dairyMessage.setOnKeyListener(new OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				// TODO Auto-generated method stub
+				if (AUTO_HIDE) {
+					delayedHide(AUTO_HIDE_DELAY_MILLIS);
+				}
+				Toast.makeText(getApplicationContext(), "Key" + Integer.toString(keyCode), Toast.LENGTH_SHORT).show();
+				return false;
+			}
+		});
     	//final ImageButton mAppMedia = (ImageButton)findViewById(R.id.app_media);
     	viewHolder.appMediaButton.setImageResource(R.drawable.app_media);
     	viewHolder.appMediaButton.setOnClickListener( new OnClickListener() {
@@ -707,7 +786,7 @@ public class BbrActivity extends Activity
 			// TODO Auto-generated method stub
 			if(result != null){
 				if(mSlideBitmap != null){
-					mSlideBitmap.recycle();
+					//mSlideBitmap.recycle();
 					mSlideBitmap = null;
 				}
 				mSlideBitmap = result;
@@ -730,6 +809,7 @@ public class BbrActivity extends Activity
 	
 	public void makeSlideShow(int duration){
 		mMediaHandler.removeCallbacks(rSlideShow);		
+		System.gc();
 		if(mSlideStreamPosition >= mSlideStream.length - 1){
 			mSlideStreamPosition = 0;
 			new MediaStream.Builder(ServerConfig.URLPICTURE, MediaType.PICTURE, onBuildSlideShow);
@@ -786,11 +866,11 @@ public class BbrActivity extends Activity
 			}		
 	}
 	private void hideAllLayer(){
-		final View vMedia = (View)findViewById(R.id.media_screen_content);
-		final View vKnowledge = (View)findViewById(R.id.knowledge_screen_content);
-		final View vShop = (View)findViewById(R.id.shop_screen_content);
-		final View vDairy = (View)findViewById(R.id.dairy_screen_content);
-		final View vWish = (View)findViewById(R.id.wish_screen_content);
+		//final View vMedia = (View)findViewById(R.id.media_screen_content);
+		//final View vKnowledge = (View)findViewById(R.id.knowledge_screen_content);
+		//final View vShop = (View)findViewById(R.id.shop_screen_content);
+		//final View vDairy = (View)findViewById(R.id.dairy_screen_content);
+		//final View vWish = (View)findViewById(R.id.wish_screen_content);
 		
 		final ImageButton imgMedia = (ImageButton)findViewById(R.id.app_media);
 		final ImageButton imgKnowledge = (ImageButton)findViewById(R.id.app_knowledge);
@@ -798,11 +878,16 @@ public class BbrActivity extends Activity
 		final ImageButton imgDairy = (ImageButton)findViewById(R.id.app_dairy);
 		final ImageButton imgWish = (ImageButton)findViewById(R.id.app_wish);
 		
-		vMedia.setVisibility(View.GONE);
-		vKnowledge.setVisibility(View.GONE);
-		vShop.setVisibility(View.GONE);
-		vDairy.setVisibility(View.GONE);
-		vWish.setVisibility(View.GONE);
+		viewHolder.appMediaContent.setVisibility(View.GONE);
+		//vMedia.setVisibility(View.GONE);
+		viewHolder.appKnowledgeContent.setVisibility(View.GONE);
+		//vKnowledge.setVisibility(View.GONE);
+		viewHolder.appShopContent.setVisibility(View.GONE);
+		//vShop.setVisibility(View.GONE);
+		viewHolder.appDairyContent.setVisibility(View.GONE);
+		//vDairy.setVisibility(View.GONE);
+		viewHolder.appWishContent.setVisibility(View.GONE);
+		//vWish.setVisibility(View.GONE);
 		
 		imgMedia.setImageResource(R.drawable.app_media_i);
 		imgKnowledge.setImageResource(R.drawable.app_knowledge_i);
@@ -823,8 +908,14 @@ public class BbrActivity extends Activity
 			// TODO Auto-generated method stub
 			if(result != null){
 				//mNewsStream = result;
-				newsCache[newsPage] = result;
-				newsListSetup(newsCache[newsPage]);
+				if(newsPage < NEWS_CACHE_PAGE){
+					newsCache[newsPage] = result;
+					newsListSetup(newsCache[newsPage]);
+				}
+				else{
+					newsCache[0] = result;
+					newsListSetup(newsCache[0]);
+				}
 			}
 		}
 	};
@@ -888,12 +979,14 @@ public class BbrActivity extends Activity
 		                    	newsPage++;
 		                    	Toast.makeText(getApplicationContext(), "Loading page " + Integer.toString(newsPage), Toast.LENGTH_SHORT).show();
 		                    	//new MediaStream.Builder(ServerConfig.URLNEWS +(newsPage > 0? Integer.toString(newsPage) : ""), MediaType.NEWS, onBuildNews);
-		                    	if(newsCache[newsPage] != null){
-		                    		newsListSetup(newsCache[newsPage]);
+		                    	if(newsPage < NEWS_CACHE_PAGE){
+		                    		if(newsCache[newsPage] != null){
+		                    			newsListSetup(newsCache[newsPage]);
+		                    			return true;
+		                    		}
 		                    	}
-		                    	else{
-		                    		new MediaStream.Builder(ServerConfig.URLNEWS +(newsPage > 0? Integer.toString(newsPage) : ""), MediaType.NEWS, onBuildNews);
-		                    	}
+		                    	new MediaStream.Builder(ServerConfig.URLNEWS +(newsPage > 0? Integer.toString(newsPage) : ""), MediaType.NEWS, onBuildNews);
+		                    	
 		                    }
 		                    else{
 		                    	Toast.makeText(getApplicationContext(), "Last page loaded!", Toast.LENGTH_SHORT).show();
@@ -906,12 +999,13 @@ public class BbrActivity extends Activity
 		                    	newsPage--;
 		                    	Toast.makeText(getApplicationContext(), "Loading page " + Integer.toString(newsPage), Toast.LENGTH_SHORT).show();
 		                    	//new MediaStream.Builder(ServerConfig.URLNEWS +(newsPage > 0? Integer.toString(newsPage) : ""), MediaType.NEWS, onBuildNews);
-		                    	if(newsCache[newsPage] != null){
-		                    		newsListSetup(newsCache[newsPage]);
+		                    	if(newsPage < NEWS_CACHE_PAGE){
+		                    		if(newsCache[newsPage] != null){
+		                    			newsListSetup(newsCache[newsPage]);
+		                    			return true;
+		                    		}
 		                    	}
-		                    	else{
-		                    		new MediaStream.Builder(ServerConfig.URLNEWS +(newsPage > 0? Integer.toString(newsPage) : ""), MediaType.NEWS, onBuildNews);
-		                    	}
+		                    	new MediaStream.Builder(ServerConfig.URLNEWS +(newsPage > 0? Integer.toString(newsPage) : ""), MediaType.NEWS, onBuildNews);
 		                    }
 		                    else{
 		                    	Toast.makeText(getApplicationContext(), "First page!", Toast.LENGTH_SHORT).show();
@@ -990,7 +1084,14 @@ public class BbrActivity extends Activity
 		}
 	};
 	//end of bbr class
-	 /* static class ViewHolder{
+	/**
+	 * 
+	 * @author Live Loud
+	 *
+	 */
+	/*
+	private static class ViewHolder{
+		//App view
 		ImageButton appMediaButton;
 		ImageButton appKnowledgeButton;
 		ImageButton appShopButton;
@@ -1004,7 +1105,8 @@ public class BbrActivity extends Activity
 		View		appShopContent;
 		View		appDairyContent;
 		View		appWishContent;
-		
+		//Media view
+		View			mediaScreen;
 		ImageButton 	mediaPrevButton;
 		ImageButton 	mediaPlayPauseButton;
 		ImageButton 	mediaNextButton;
@@ -1014,22 +1116,31 @@ public class BbrActivity extends Activity
 		TextView 		mediaStatus;
 		TextView 		mediaIdeal;
 		VisualizerView 	mediaVisualizer;
-		
+		//Knowledge view
+		View			knowledgeScreen;
 		TextView		knowledgeTitle;
 		TextView		knowledgeItemsStatus;
 		TextView		knowledgeDetailStatus;
 		View			knowledgeItems;
 		View			knowledgeDetail;
+		//Shop view
+		View			shopScreen;
+		//Dairy view
+		View			dairyScreen;
+		//Wish view
+		View			wishScreen;
 		
 		public ViewHolder(){
 			
 		}
-	} */
+	}
+	*/
+	/*
 	public class MyGestureDetector extends SimpleOnGestureListener{
 
 		/* (non-Javadoc)
 		 * @see android.view.GestureDetector.SimpleOnGestureListener#onFling(android.view.MotionEvent, android.view.MotionEvent, float, float)
-		 */
+		 
 		private OnMyGestureDetector gesture;
 		public void setMyGestureListener(OnMyGestureDetector listener){
 			gesture = listener;
@@ -1061,4 +1172,7 @@ public class BbrActivity extends Activity
 		public void onSwipeLeft();
 		public void onSwipeRight();
 	}	
+	*/
+	
+	
 }
